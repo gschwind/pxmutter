@@ -78,7 +78,8 @@ typedef enum {
   META_TILE_NONE,
   META_TILE_LEFT,
   META_TILE_RIGHT,
-  META_TILE_MAXIMIZED
+  META_TILE_MAXIMIZED,
+  META_TILE_WITH_CUSTOM_POSITION /* the window is TILED but have a user defined position */
 } MetaTileMode;
 
 typedef enum {

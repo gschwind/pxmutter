@@ -2782,6 +2782,28 @@ meta_window_maximize_internal (MetaWindow        *window,
 }
 
 void
+meta_window_make_tiled_with_custom_position_internal (MetaWindow        *window,
+                                                      MetaRectangle     *saved_rect)
+{
+
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Tile %s\n",
+              window->desc);
+
+  if (saved_rect != NULL)
+    window->saved_rect = *saved_rect;
+  else
+    meta_window_save_rect (window);
+
+  /* Update the edge constraints */
+  update_edge_constraints (window);
+
+  meta_window_recalc_features (window);
+  set_net_wm_state (window);
+
+}
+
+void
 meta_window_maximize (MetaWindow        *window,
                       MetaMaximizeFlags  directions)
 {
@@ -3479,6 +3501,60 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 
       g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_FULLSCREEN]);
     }
+}
+
+void
+meta_window_make_tiled_with_custom_position (MetaWindow  *window, MetaRectangle *rect)
+{
+	  MetaRectangle *saved_rect = NULL;
+
+	  g_return_if_fail (!window->override_redirect);
+
+	  /* Only do something if the window isn't already maximized in the
+	   * given direction(s).
+	   */
+	  if (!META_WINDOW_TILED_WITH_CUSTOM_POSITION(window))
+	    {
+	      if (window->shaded)
+	        {
+	          /* Shading sucks anyway; I'm not adding a timestamp argument
+	           * to this function just for this niche usage & corner case.
+	           */
+	          guint32 timestamp =
+	            meta_display_get_current_time_roundtrip (window->display);
+	          meta_window_unshade (window, timestamp);
+	        }
+
+	      /* if the window hasn't been placed yet, we'll maximize it then
+	       */
+	      if (!window->placed)
+			{
+			  return;
+			}
+
+	      if (window->tile_mode != META_TILE_NONE)
+	        {
+	          saved_rect = &window->saved_rect;
+	        }
+
+	      window->unconstrained_rect = *rect;
+	      window->tile_mode = META_TILE_WITH_CUSTOM_POSITION;
+
+	      meta_window_make_tiled_with_custom_position_internal (window,
+	                                     saved_rect);
+
+	      MetaRectangle old_frame_rect, old_buffer_rect;
+
+	      meta_window_get_frame_rect (window, &old_frame_rect);
+	      meta_window_get_buffer_rect (window, &old_buffer_rect);
+
+	      meta_window_move_resize_internal (window,
+	                                        (META_MOVE_RESIZE_MOVE_ACTION |
+	                                         META_MOVE_RESIZE_RESIZE_ACTION |
+	                                         META_MOVE_RESIZE_STATE_CHANGED),
+	                                        NorthWestGravity,
+	                                        window->unconstrained_rect);
+	    }
 }
 
 static void
@@ -6563,6 +6639,7 @@ meta_window_get_tile_area (MetaWindow    *window,
 
   if (tile_mode == META_TILE_RIGHT)
     tile_area->x += work_area.width - tile_area->width;
+
 }
 
 gboolean

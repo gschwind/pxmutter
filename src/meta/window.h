@@ -218,6 +218,7 @@ MetaWindow *meta_window_get_tile_match (MetaWindow *window);
 
 void        meta_window_make_fullscreen    (MetaWindow  *window);
 void        meta_window_unmake_fullscreen  (MetaWindow  *window);
+void        meta_window_make_tiled_with_custom_position         (MetaWindow  *window, MetaRectangle *rect);
 void        meta_window_make_above         (MetaWindow  *window);
 void        meta_window_unmake_above       (MetaWindow  *window);
 void        meta_window_shade              (MetaWindow  *window,
