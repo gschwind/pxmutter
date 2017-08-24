@@ -2904,6 +2904,12 @@ meta_window_is_fullscreen (MetaWindow *window)
   return window->fullscreen;
 }
 
+gboolean
+meta_window_is_tiled_with_custom_position (MetaWindow *window)
+{
+  return META_WINDOW_TILED_WITH_CUSTOM_POSITION(window);
+}
+
 /**
  * meta_window_is_screen_sized:
  * @window: A #MetaWindow
