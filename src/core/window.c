@@ -3563,6 +3563,106 @@ meta_window_make_tiled_with_custom_position (MetaWindow  *window, MetaRectangle 
 	    }
 }
 
+void
+meta_window_unmake_tiled_with_custom_position (MetaWindow        *window)
+{
+  g_return_if_fail (!window->override_redirect);
+
+  /* Only do something if the window isn't already maximized in the
+   * given direction(s).
+   */
+  if (META_WINDOW_TILED_WITH_CUSTOM_POSITION(window))
+    {
+      MetaRectangle *desired_rect;
+      MetaRectangle target_rect;
+      MetaRectangle work_area;
+      MetaRectangle old_frame_rect, old_buffer_rect;
+
+      meta_window_get_work_area_for_monitor (window, window->monitor->number, &work_area);
+      meta_window_get_frame_rect (window, &old_frame_rect);
+      meta_window_get_buffer_rect (window, &old_buffer_rect);
+
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Untile %s\n",
+                  window->desc);
+
+      window->tile_mode = META_TILE_NONE;
+
+      /* recalc_features() will eventually clear the cached frame
+       * extents, but we need the correct frame extents in the code below,
+       * so invalidate the old frame extents manually up front.
+       */
+      meta_window_frame_size_changed (window);
+
+      desired_rect = &window->saved_rect;
+
+      /* Unmaximize to the saved_rect position in the direction(s)
+       * being unmaximized.
+       */
+      target_rect = old_frame_rect;
+
+      /* Avoid unmaximizing to "almost maximized" size when the previous size
+       * is greater then 80% of the work area use MAX_UNMAXIMIZED_WINDOW_AREA of the work area as upper limit
+       * while maintaining the aspect ratio.
+       */
+      if (desired_rect->width * desired_rect->height > work_area.width * work_area.height * MAX_UNMAXIMIZED_WINDOW_AREA)
+        {
+          if (desired_rect->width > desired_rect->height)
+            {
+              float aspect = (float)desired_rect->height / (float)desired_rect->width;
+              desired_rect->width = MAX (work_area.width * sqrt (MAX_UNMAXIMIZED_WINDOW_AREA), window->size_hints.min_width);
+              desired_rect->height = MAX (desired_rect->width * aspect, window->size_hints.min_height);
+            }
+          else
+            {
+              float aspect = (float)desired_rect->width / (float)desired_rect->height;
+              desired_rect->height = MAX (work_area.height * sqrt (MAX_UNMAXIMIZED_WINDOW_AREA), window->size_hints.min_height);
+              desired_rect->width = MAX (desired_rect->height * aspect, window->size_hints.min_width);
+            }
+        }
+
+	  target_rect.x     = desired_rect->x;
+	  target_rect.width = desired_rect->width;
+	  target_rect.y      = desired_rect->y;
+	  target_rect.height = desired_rect->height;
+
+      /* Window's size hints may have changed while maximized, making
+       * saved_rect invalid.  #329152
+       */
+      meta_window_frame_rect_to_client_rect (window, &target_rect, &target_rect);
+      ensure_size_hints_satisfied (&target_rect, &window->size_hints);
+      meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
+
+      meta_compositor_size_change_window (window->display->compositor, window,
+                                          META_SIZE_CHANGE_UNMAXIMIZE,
+                                          &old_frame_rect, &old_buffer_rect);
+
+      meta_window_move_resize_internal (window,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED),
+                                        NorthWestGravity,
+                                        target_rect);
+
+      /* When we unmaximize, if we're doing a mouse move also we could
+       * get the window suddenly jumping to the upper left corner of
+       * the workspace, since that's where it was when the grab op
+       * started. So we need to update the grab anchor position.
+       */
+      if (meta_grab_op_is_moving (window->display->grab_op) &&
+          window->display->grab_window == window)
+        {
+          window->display->grab_anchor_window_pos = target_rect;
+        }
+
+      meta_window_recalc_features (window);
+      set_net_wm_state (window);
+      if (!window->monitor->in_fullscreen)
+        meta_screen_queue_check_fullscreen (window->screen);
+    }
+
+}
+
 static void
 meta_window_clear_fullscreen_monitors (MetaWindow *window)
 {
