@@ -3094,6 +3094,12 @@ update_edge_constraints (MetaWindow *window)
       else
         window->edge_constraints[3] = META_EDGE_CONSTRAINT_NONE;
       break;
+    case META_TILE_WITH_CUSTOM_POSITION:
+        window->edge_constraints[0] = META_EDGE_CONSTRAINT_NONE;
+        window->edge_constraints[1] = META_EDGE_CONSTRAINT_NONE;
+        window->edge_constraints[2] = META_EDGE_CONSTRAINT_NONE;
+        window->edge_constraints[3] = META_EDGE_CONSTRAINT_NONE;
+        break;
     }
 
   /* h/vmaximize also modify the edge constraints */
