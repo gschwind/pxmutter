@@ -270,7 +270,8 @@ meta_frame_get_flags (MetaFrame *frame)
   /* FIXME: Should we have some kind of UI for windows that are just vertically
    * maximized or just horizontally maximized?
    */
-  if (META_WINDOW_MAXIMIZED (frame->window))
+  if (META_WINDOW_MAXIMIZED (frame->window)||
+	  META_WINDOW_TILED_WITH_CUSTOM_POSITION(frame->window))
     flags |= META_FRAME_MAXIMIZED;
 
   if (META_WINDOW_TILED_LEFT (frame->window))
