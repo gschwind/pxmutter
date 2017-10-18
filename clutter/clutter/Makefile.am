@@ -37,7 +37,7 @@ AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 INTROSPECTION_GIRS =
 
 # the base include path for headers
-clutter_base_includedir = $(includedir)/mutter/clutter-$(LIBMUTTER_API_VERSION)
+clutter_base_includedir = $(includedir)/pxmutter/clutter-$(LIBMUTTER_API_VERSION)
 clutter_includedir = $(clutter_base_includedir)/clutter
 clutter_deprecateddir = $(clutter_base_includedir)/clutter/deprecated
 
@@ -356,7 +356,7 @@ EXTRA_DIST += clutter-version.h.in clutter-version.h
 # key symbol update script
 EXTRA_DIST += clutter-keysyms-update.pl
 
-pc_files += mutter-clutter-$(LIBMUTTER_API_VERSION).pc
+pc_files += pxmutter-clutter-$(LIBMUTTER_API_VERSION).pc
 
 # in order to be compatible with Clutter < 1.10, when we shipped a single
 # shared library whose name was determined by the single backend it
@@ -442,10 +442,10 @@ x11_introspection = $(x11_source_c) $(x11_source_h)
 clutterx11_includedir = $(clutter_includedir)/x11
 clutterx11_include_HEADERS = $(x11_source_h)
 
-mutter-clutter-x11-@LIBMUTTER_API_VERSION@.pc: mutter-clutter-$(LIBMUTTER_API_VERSION).pc
+pxmutter-clutter-x11-@LIBMUTTER_API_VERSION@.pc: pxmutter-clutter-$(LIBMUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
-pc_files += mutter-clutter-x11-$(LIBMUTTER_API_VERSION).pc
+pc_files += pxmutter-clutter-x11-$(LIBMUTTER_API_VERSION).pc
 
 # Shared cogl backend files
 cogl_source_h =
@@ -582,7 +582,7 @@ nodist_clutter_include_HEADERS = clutter-config.h $(built_source_h)
 
 clutter_deprecated_HEADERS = $(deprecated_h)
 
-mutterlibdir = $(libdir)/mutter
+mutterlibdir = $(libdir)/pxmutter
 mutterlib_LTLIBRARIES = libmutter-clutter-@LIBMUTTER_API_VERSION@.la
 
 libmutter_clutter_@LIBMUTTER_API_VERSION@_la_LIBADD = \

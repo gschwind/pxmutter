@@ -64,7 +64,7 @@ glib_enum_c = cogl-path-enum-types.c
 glib_enum_headers = $(source_1_x_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
-mutterlibdir = $(libdir)/mutter
+mutterlibdir = $(libdir)/pxmutter
 mutterlib_LTLIBRARIES = libmutter-cogl-path-@LIBMUTTER_API_VERSION@.la
 
 libmutter_cogl_path_@LIBMUTTER_API_VERSION@_la_SOURCES = $(source_c) $(source_h)
@@ -89,12 +89,12 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)			\
 	-I$(top_builddir)
 
-cogl_base_includedir = $(includedir)/mutter
+cogl_base_includedir = $(includedir)/pxmutter
 cogl_pathheadersdir = $(cogl_base_includedir)/cogl/cogl-path
 cogl_pathheaders_HEADERS = $(source_h)
 nodist_cogl_pathheaders_HEADERS = cogl-path-enum-types.h
 
-pc_files = mutter-cogl-path-$(LIBMUTTER_API_VERSION).pc
+pc_files = pxmutter-cogl-path-$(LIBMUTTER_API_VERSION).pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)

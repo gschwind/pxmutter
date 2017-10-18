@@ -11,7 +11,7 @@ m4_define([mutter_plugin_api_version], [3])
 
 m4_define([libmutter_api_version], [1])
 
-AC_INIT([mutter], [mutter_version],
+AC_INIT([pxmutter], [mutter_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=mutter])
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -48,7 +48,7 @@ AC_SUBST(MUTTER_PLUGIN_DIR)
 # Honor aclocal flags
 AC_SUBST(ACLOCAL_AMFLAGS, "\${ACLOCAL_FLAGS}")
 
-GETTEXT_PACKAGE=mutter
+GETTEXT_PACKAGE=pxmutter
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
@@ -486,7 +486,7 @@ data/Makefile
 doc/Makefile
 doc/man/Makefile
 src/Makefile
-src/libmutter-$LIBMUTTER_API_VERSION.pc:src/libmutter.pc.in
+src/libpxmutter-$LIBMUTTER_API_VERSION.pc:src/libmutter.pc.in
 src/compositor/plugins/Makefile
 src/meta/meta-version.h
 po/Makefile.in
@@ -496,11 +496,11 @@ AC_OUTPUT
 
 # Check that cogl and clutter have their .pc files regenerated with the correct version
 
-COGL_PC_VERSION=$(grep Version: cogl/cogl/mutter-cogl-$LIBMUTTER_API_VERSION.pc|awk '{ print $2; }')
+COGL_PC_VERSION=$(grep Version: cogl/cogl/pxmutter-cogl-$LIBMUTTER_API_VERSION.pc|awk '{ print $2; }')
 AS_IF([test "x$COGL_PC_VERSION" != "x$MUTTER_VERSION"],
       [AC_MSG_ERROR([mutter-cogl pkg-config file not updated, rerun ./configure])])
 
-CLUTTER_PC_VERSION=$(grep Version: clutter/clutter/mutter-clutter-$LIBMUTTER_API_VERSION.pc|awk '{ print $2; }')
+CLUTTER_PC_VERSION=$(grep Version: clutter/clutter/pxmutter-clutter-$LIBMUTTER_API_VERSION.pc|awk '{ print $2; }')
 AS_IF([test "x$CLUTTER_PC_VERSION" != "x$MUTTER_VERSION"],
       [AC_MSG_ERROR([mutter-clutter pkg-config file not updated, rerun ./configure])])
 

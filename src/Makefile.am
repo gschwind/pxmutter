@@ -1,7 +1,7 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
-lib_LTLIBRARIES = libmutter-@LIBMUTTER_API_VERSION@.la
+lib_LTLIBRARIES = libpxmutter-@LIBMUTTER_API_VERSION@.la
 
 SUBDIRS=compositor/plugins
 
@@ -37,7 +37,7 @@ AM_CPPFLAGS = \
 	-DMUTTER_LOCALEDIR=\"$(localedir)\"				\
 	-DMUTTER_PKGDATADIR=\"$(pkgdatadir)\"				\
 	-DMUTTER_DATADIR=\"$(datadir)\"					\
-	-DG_LOG_DOMAIN=\"mutter\"					\
+	-DG_LOG_DOMAIN=\"pxmutter\"					\
 	-DSN_API_NOT_YET_FROZEN=1					\
 	-DMUTTER_PKGLIBDIR=\"$(pkglibdir)\"				\
 	-DMUTTER_PLUGIN_DIR=\"$(MUTTER_PLUGIN_DIR)\"			\
@@ -90,7 +90,7 @@ wayland_protocols =				\
 	wayland/protocol/gtk-primary-selection.xml	\
 	$(NULL)
 
-libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
+libpxmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-backend.c			\
 	meta/meta-backend.h			\
 	meta/meta-settings.h			\
@@ -336,7 +336,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	$(NULL)
 
 if HAVE_REMOTE_DESKTOP
-libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
+libpxmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	backends/meta-dbus-session-watcher.c	\
 	backends/meta-dbus-session-watcher.h	\
 	backends/meta-remote-desktop.c		\
@@ -359,7 +359,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 endif
 
 if HAVE_WAYLAND
-libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
+libpxmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	compositor/meta-surface-actor-wayland.c	\
 	compositor/meta-surface-actor-wayland.h	\
 	wayland/meta-wayland.c			\
@@ -449,7 +449,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 endif
 
 if HAVE_NATIVE_BACKEND
-libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
+libpxmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
 	backends/native/meta-backend-native.c		\
 	backends/native/meta-backend-native.h		\
 	backends/native/meta-backend-native-private.h	\
@@ -485,11 +485,11 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
 	$(NULL)
 endif
 
-nodist_libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES = $(mutter_built_sources)
+nodist_libpxmutter_@LIBMUTTER_API_VERSION@_la_SOURCES = $(mutter_built_sources)
 
-libmutter_@LIBMUTTER_API_VERSION@_la_LDFLAGS = \
+libpxmutter_@LIBMUTTER_API_VERSION@_la_LDFLAGS = \
 	-no-undefined -export-symbols-regex "^(meta|ag)_.*"
-libmutter_@LIBMUTTER_API_VERSION@_la_LIBADD  = \
+libpxmutter_@LIBMUTTER_API_VERSION@_la_LIBADD  = \
 	$(MUTTER_LIBS) \
 	$(MUTTER_NATIVE_BACKEND_LIBS)	\
 	$(top_builddir)/clutter/clutter/libmutter-clutter-$(LIBMUTTER_API_VERSION).la \
@@ -543,7 +543,7 @@ libmutterinclude_base_headers =			\
 	$(libmutterinclude_headers)		\
 	$(libmutterinclude_built_headers)
 
-libmutterincludedir = $(includedir)/mutter/meta
+libmutterincludedir = $(includedir)/pxmutter/meta
 
 libmutterinclude_HEADERS =			\
 	$(libmutterinclude_headers)
@@ -551,15 +551,15 @@ libmutterinclude_HEADERS =			\
 nodist_libmutterinclude_HEADERS =		\
 	$(libmutterinclude_built_headers)
 
-bin_PROGRAMS=mutter
+bin_PROGRAMS=pxmutter
 noinst_PROGRAMS=
 
-mutter_SOURCES = core/mutter.c
-mutter_LDADD = $(MUTTER_LIBS) libmutter-@LIBMUTTER_API_VERSION@.la
+pxmutter_SOURCES = core/mutter.c
+pxmutter_LDADD = $(MUTTER_LIBS) libpxmutter-@LIBMUTTER_API_VERSION@.la
 
-libexec_PROGRAMS = mutter-restart-helper
-mutter_restart_helper_SOURCES = core/restart-helper.c
-mutter_restart_helper_LDADD = $(MUTTER_LIBS)
+libexec_PROGRAMS = pxmutter-restart-helper
+pxmutter_restart_helper_SOURCES = core/restart-helper.c
+pxmutter_restart_helper_LDADD = $(MUTTER_LIBS)
 
 include Makefile-tests.am
 
@@ -590,7 +590,7 @@ INTROSPECTION_COMPILER_ARGS =					\
 INTROSPECTION_SCANNER_ENV = \
 	PKG_CONFIG_PATH=$(top_builddir)/clutter/clutter/:$(top_builddir)/cogl/cogl/:$(top_builddir)/cogl/cogl-pango/:$${PKG_CONFIG_PATH}
 
-Meta-@LIBMUTTER_API_VERSION@.gir: libmutter-$(LIBMUTTER_API_VERSION).la
+Meta-@LIBMUTTER_API_VERSION@.gir: libpxmutter-$(LIBMUTTER_API_VERSION).la
 Meta_@LIBMUTTER_API_VERSION@_gir_VERSION = $(LIBMUTTER_API_VERSION)
 Meta_@LIBMUTTER_API_VERSION@_gir_INCLUDES =	\
 	GObject-2.0				\
@@ -602,12 +602,12 @@ Meta_@LIBMUTTER_API_VERSION@_gir_INCLUDES =	\
 	xlib-2.0				\
 	xfixes-4.0				\
 	$(NULL)
-Meta_@LIBMUTTER_API_VERSION@_gir_EXPORT_PACKAGES = libmutter-$(LIBMUTTER_API_VERSION)
+Meta_@LIBMUTTER_API_VERSION@_gir_EXPORT_PACKAGES = libpxmutter-$(LIBMUTTER_API_VERSION)
 Meta_@LIBMUTTER_API_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS)
-Meta_@LIBMUTTER_API_VERSION@_gir_LIBS = libmutter-$(LIBMUTTER_API_VERSION).la
+Meta_@LIBMUTTER_API_VERSION@_gir_LIBS = libpxmutter-$(LIBMUTTER_API_VERSION).la
 Meta_@LIBMUTTER_API_VERSION@_gir_FILES =			\
 	$(libmutterinclude_base_headers)			\
-	$(filter %.c,$(libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES) $(nodist_libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES))
+	$(filter %.c,$(libpxmutter_@LIBMUTTER_API_VERSION@_la_SOURCES) $(nodist_libpxmutter_@LIBMUTTER_API_VERSION@_la_SOURCES))
 Meta_@LIBMUTTER_API_VERSION@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
@@ -624,11 +624,11 @@ DISTCLEANFILES = 				\
 	$(pkgconfig_DATA)
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libmutter-$(LIBMUTTER_API_VERSION).pc
+pkgconfig_DATA = libpxmutter-$(LIBMUTTER_API_VERSION).pc
 
 EXTRA_DIST +=					\
 	$(wayland_protocols)			\
-	libmutter.pc.in				\
+	libpxmutter.pc.in				\
 	meta-enum-types.h.in			\
 	meta-enum-types.c.in			\
 	org.freedesktop.login1.xml		\

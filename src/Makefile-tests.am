@@ -34,13 +34,13 @@ endif
 EXTRA_DIST += tests/mutter-all.test.in
 
 mutter_test_client_SOURCES = tests/test-client.c
-mutter_test_client_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
+mutter_test_client_LDADD = $(MUTTER_LIBS) libpxmutter-$(LIBMUTTER_API_VERSION).la
 
 mutter_test_runner_SOURCES = \
 	tests/test-utils.c \
 	tests/test-utils.h \
 	tests/test-runner.c
-mutter_test_runner_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
+mutter_test_runner_LDADD = $(MUTTER_LIBS) libpxmutter-$(LIBMUTTER_API_VERSION).la
 
 mutter_test_unit_tests_SOURCES = \
 	tests/test-utils.c \
@@ -59,7 +59,7 @@ mutter_test_unit_tests_SOURCES = \
 	tests/monitor-unit-tests.c \
 	tests/monitor-unit-tests.h \
 	$(NULL)
-mutter_test_unit_tests_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
+mutter_test_unit_tests_LDADD = $(MUTTER_LIBS) libpxmutter-$(LIBMUTTER_API_VERSION).la
 
 mutter_test_headless_start_test_SOURCES = \
 	tests/headless-start-test.c \
@@ -68,7 +68,7 @@ mutter_test_headless_start_test_SOURCES = \
 	tests/meta-monitor-manager-test.c \
 	tests/meta-monitor-manager-test.h \
 	$(NULL)
-mutter_test_headless_start_test_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
+mutter_test_headless_start_test_LDADD = $(MUTTER_LIBS) libpxmutter-$(LIBMUTTER_API_VERSION).la
 
 .PHONY: run-tests run-test-runner-tests run-unit-tests run-headless-start-test
 
@@ -88,6 +88,6 @@ endif
 # Some random test programs for bits of the code
 
 testboxes_SOURCES = core/testboxes.c
-testboxes_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
+testboxes_LDADD = $(MUTTER_LIBS) libpxmutter-$(LIBMUTTER_API_VERSION).la
 
 noinst_PROGRAMS += testboxes

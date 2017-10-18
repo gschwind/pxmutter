@@ -15,7 +15,7 @@ AM_CPPFLAGS = \
 	-DMUTTER_LOCALEDIR=\"$(localedir)\"				\
 	-DMUTTER_PKGDATADIR=\"$(pkgdatadir)\"				\
 	-DMUTTER_DATADIR=\"$(datadir)\"					\
-	-DG_LOG_DOMAIN=\"mutter\"					\
+	-DG_LOG_DOMAIN=\"pxmutter\"					\
 	-DSN_API_NOT_YET_FROZEN=1					\
 	-DMUTTER_PLUGIN_DIR=\"$(MUTTER_PLUGIN_DIR)\"
 

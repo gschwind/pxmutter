@@ -784,7 +784,7 @@ AC_CONFIG_FILES([
 	clutter/Makefile
         clutter/clutter-config.h
 	clutter/clutter-version.h
-	clutter/mutter-clutter-$LIBMUTTER_API_VERSION.pc:clutter/mutter-clutter.pc.in
+	clutter/pxmutter-clutter-$LIBMUTTER_API_VERSION.pc:clutter/mutter-clutter.pc.in
 
 	tests/Makefile
 	tests/accessibility/Makefile

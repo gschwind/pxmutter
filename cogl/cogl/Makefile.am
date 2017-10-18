@@ -41,7 +41,7 @@ BUILT_SOURCES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
 DISTCLEANFILES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
 EXTRA_DIST += cogl-defines.h.in cogl-egl-defines.h.in cogl-gl-header.h.in
 
-pc_files = mutter-cogl-$(LIBMUTTER_API_VERSION).pc
+pc_files = pxmutter-cogl-$(LIBMUTTER_API_VERSION).pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
@@ -438,7 +438,7 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-private.h
 endif
 
-mutterlibdir = $(libdir)/mutter
+mutterlibdir = $(libdir)/pxmutter
 mutterlib_LTLIBRARIES = libmutter-cogl-@LIBMUTTER_API_VERSION@.la
 
 libmutter_cogl_@LIBMUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
@@ -464,7 +464,7 @@ cogl_headers = \
 	cogl-pango.h \
 	$(NULL)
 
-cogl_base_includedir = $(includedir)/mutter
+cogl_base_includedir = $(includedir)/pxmutter
 cogldeprecatedincludedir = $(cogl_base_includedir)/cogl/cogl/deprecated
 cogldeprecatedinclude_HEADERS = $(cogl_deprecated_h) $(cogl_deprecated_nonintrospected_h)
 
