@@ -1,10 +1,10 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-libdir=@libdir@/mutter
-includedir=@includedir@/mutter
+libdir=@libdir@/page-mutter
+includedir=@includedir@/page-mutter
 
 apiversion=@LIBMUTTER_API_VERSION@
-requires=@CLUTTER_REQUIRES@ mutter-cogl-@LIBMUTTER_API_VERSION@
+requires=@CLUTTER_REQUIRES@ page-mutter-cogl-@LIBMUTTER_API_VERSION@
 requires_private=@CLUTTER_REQUIRES_PRIVATE@
 backends=@CLUTTER_BACKENDS@
 
@@ -18,7 +18,7 @@ cogl_driver=deprecated
 Name: Mutter Clutter
 Description: Mutter's Clutter Private Library
 Version: @MUTTER_VERSION@
-Libs: -L${libdir} -lmutter-clutter-${apiversion}
+Libs: -L${libdir} -lpage-mutter-clutter-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: ${requires}
 Requires.private: ${requires_private}
