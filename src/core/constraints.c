@@ -1307,50 +1307,68 @@ constrain_aspect_ratio (MetaWindow         *window,
   new_width = client_rect.width;
   new_height = client_rect.height;
 
-  switch (info->resize_gravity)
-    {
-    case WestGravity:
-    case EastGravity:
-      /* Yeah, I suck for doing implicit rounding -- sue me */
-      new_height = CLAMP (new_height, new_width / maxr,  new_width / minr);
-      break;
+	if (!META_WINDOW_TILED_WITH_CUSTOM_POSITION(window))
+	  {
+	  switch (info->resize_gravity)
+		{
+		case WestGravity:
+		case EastGravity:
+		  /* Yeah, I suck for doing implicit rounding -- sue me */
+		  new_height = CLAMP (new_height, new_width / maxr,  new_width / minr);
+		  break;
 
-    case NorthGravity:
-    case SouthGravity:
-      /* Yeah, I suck for doing implicit rounding -- sue me */
-      new_width  = CLAMP (new_width,  new_height * minr, new_height * maxr);
-      break;
+		case NorthGravity:
+		case SouthGravity:
+		  /* Yeah, I suck for doing implicit rounding -- sue me */
+		  new_width  = CLAMP (new_width,  new_height * minr, new_height * maxr);
+		  break;
 
-    case NorthWestGravity:
-    case SouthWestGravity:
-    case CenterGravity:
-    case NorthEastGravity:
-    case SouthEastGravity:
-    case StaticGravity:
-    default:
-      /* Find what width would correspond to new_height, and what height would
-       * correspond to new_width */
-      alt_width  = CLAMP (new_width,  new_height * minr, new_height * maxr);
-      alt_height = CLAMP (new_height, new_width / maxr,  new_width / minr);
+		case NorthWestGravity:
+		case SouthWestGravity:
+		case CenterGravity:
+		case NorthEastGravity:
+		case SouthEastGravity:
+		case StaticGravity:
+		default:
+			  /* Find what width would correspond to new_height, and what height would
+			   * correspond to new_width */
+			  alt_width  = CLAMP (new_width,  new_height * minr, new_height * maxr);
+			  alt_height = CLAMP (new_height, new_width / maxr,  new_width / minr);
 
-      /* The line connecting the points (alt_width, new_height) and
-       * (new_width, alt_height) provide a range of
-       * valid-for-the-aspect-ratio-constraint sizes.  We want the
-       * size in that range closest to the value requested, i.e. the
-       * point on the line which is closest to the point (new_width,
-       * new_height)
-       */
-      meta_rectangle_find_linepoint_closest_to_point (alt_width, new_height,
-                                                      new_width, alt_height,
-                                                      new_width, new_height,
-                                                      &best_width, &best_height);
+			  /* The line connecting the points (alt_width, new_height) and
+			   * (new_width, alt_height) provide a range of
+			   * valid-for-the-aspect-ratio-constraint sizes.  We want the
+			   * size in that range closest to the value requested, i.e. the
+			   * point on the line which is closest to the point (new_width,
+			   * new_height)
+			   */
+			  meta_rectangle_find_linepoint_closest_to_point (alt_width, new_height,
+															  new_width, alt_height,
+															  new_width, new_height,
+															  &best_width, &best_height);
 
-      /* Yeah, I suck for doing implicit rounding -- sue me */
-      new_width  = best_width;
-      new_height = best_height;
+			  /* Yeah, I suck for doing implicit rounding -- sue me */
+			  new_width  = best_width;
+			  new_height = best_height;
 
-      break;
-    }
+		  break;
+		}
+
+	  }
+	else
+	  {
+		  /* ensure ratio constrain and new size inside client_rect */
+		  alt_width  = new_height * maxr;
+		  alt_height = new_width / minr;
+		  if (alt_height < new_height)
+			{
+			  new_height = alt_height;
+			}
+		  else if (alt_width < new_width)
+			{
+			  new_width = alt_width;
+			}
+	  }
 
   {
     client_rect.width = new_width;
@@ -1368,11 +1386,22 @@ constrain_aspect_ratio (MetaWindow         *window,
   else
     start_rect = &info->orig;
 
-  meta_rectangle_resize_with_gravity (start_rect,
-                                      &info->current,
-                                      info->resize_gravity,
-                                      new_width,
-                                      new_height);
+  if (!META_WINDOW_TILED_WITH_CUSTOM_POSITION(window))
+    {
+	  meta_rectangle_resize_with_gravity (start_rect,
+										  &info->current,
+										  info->resize_gravity,
+										  new_width,
+										  new_height);
+    }
+  else
+    {
+	  meta_rectangle_resize_with_gravity (start_rect,
+	                                      &info->current,
+										  CenterGravity,
+	                                      new_width,
+	                                      new_height);
+    }
 
   return TRUE;
 }
